@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Calendar, Clock, MapPin, ArrowLeft, Info } from 'lucide-react';
+import { Calendar, Clock, MapPin, ArrowLeft, Info, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Event, Venue } from '@/types';
@@ -29,7 +29,7 @@ export default function EventDetailsPage() {
         const { data: eventData, error: eventError } = await supabase
           .from('events')
           .select('*')
-          .eq('id', id)
+          .eq('id', parseInt(id)) // Convert string id to number
           .single();
         
         if (eventError) {
@@ -126,18 +126,18 @@ export default function EventDetailsPage() {
         
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <Badge className={`
-            ${event.event_type === 'yoga' ? 'bg-tulum-teal/20 text-tulum-teal' : ''}
-            ${event.event_type === 'meditation' ? 'bg-tulum-leaf/20 text-tulum-leaf' : ''}
-            ${event.event_type === 'sound healing' ? 'bg-tulum-sunset/20 text-tulum-sunset' : ''}
-            ${event.event_type === 'workshop' ? 'bg-tulum-coral/20 text-tulum-coral' : ''}
-            ${!['yoga', 'meditation', 'sound healing', 'workshop'].includes(event.event_type) ? 'bg-gray-200 text-gray-600' : ''}
+            ${event.category === 'yoga' ? 'bg-tulum-teal/20 text-tulum-teal' : ''}
+            ${event.category === 'meditation' ? 'bg-tulum-leaf/20 text-tulum-leaf' : ''}
+            ${event.category === 'sound healing' ? 'bg-tulum-sunset/20 text-tulum-sunset' : ''}
+            ${event.category === 'workshop' ? 'bg-tulum-coral/20 text-tulum-coral' : ''}
+            ${!['yoga', 'meditation', 'sound healing', 'workshop'].includes(event.category) ? 'bg-gray-200 text-gray-600' : ''}
           `}>
-            {event.event_type}
+            {event.category}
           </Badge>
-          {event.price === 0 ? (
+          {event.price === '0' || event.price === '$0' ? (
             <Badge variant="outline" className="bg-tulum-sand/10 text-gray-700">Free</Badge>
           ) : (
-            <Badge variant="outline" className="bg-tulum-sand/10 text-gray-700">${event.price}</Badge>
+            <Badge variant="outline" className="bg-tulum-sand/10 text-gray-700">{event.price}</Badge>
           )}
           {event.featured && (
             <Badge className="bg-tulum-coral text-white">
@@ -182,6 +182,13 @@ export default function EventDetailsPage() {
                   </Link>
                 </div>
                 <p className="text-sm text-gray-500 ml-7">{venue.address}</p>
+              </div>
+            )}
+
+            {event.instructor && (
+              <div className="flex items-center gap-2">
+                <User size={20} className="text-tulum-teal" />
+                <span>{event.instructor}</span>
               </div>
             )}
           </div>

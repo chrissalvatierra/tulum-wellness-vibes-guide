@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin, ArrowLeft, Info } from 'lucide-react';
@@ -7,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Event, Venue } from '@/types';
 import { supabase } from '@/lib/supabase';
 import { formatEventDate } from '@/lib/utils';
+import { useToast } from "@/hooks/use-toast";
 
 export default function EventDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +15,7 @@ export default function EventDetailsPage() {
   const [venue, setVenue] = useState<Venue | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     async function fetchEventDetails() {
@@ -22,6 +23,7 @@ export default function EventDetailsPage() {
       
       setLoading(true);
       try {
+        console.log(`EventDetailsPage: Fetching event with ID ${id}`);
         // Fetch event details
         const { data: eventData, error: eventError } = await supabase
           .from('events')
@@ -29,33 +31,54 @@ export default function EventDetailsPage() {
           .eq('id', id)
           .single();
         
-        if (eventError) throw eventError;
+        if (eventError) {
+          console.error("EventDetailsPage: Error fetching event:", eventError);
+          throw eventError;
+        }
+        
         if (!eventData) {
           setError("Event not found");
+          toast({
+            title: "Event not found",
+            description: "The event you're looking for doesn't exist or has been removed.",
+            variant: "destructive",
+          });
           return;
         }
         
+        console.log("EventDetailsPage: Event data:", eventData);
         setEvent(eventData);
         
         // Fetch venue details
+        console.log(`EventDetailsPage: Fetching venue with ID ${eventData.venue_id}`);
         const { data: venueData, error: venueError } = await supabase
           .from('venues')
           .select('*')
           .eq('id', eventData.venue_id)
           .single();
         
-        if (venueError) throw venueError;
+        if (venueError) {
+          console.error("EventDetailsPage: Error fetching venue:", venueError);
+          throw venueError;
+        }
+        
+        console.log("EventDetailsPage: Venue data:", venueData);
         setVenue(venueData);
       } catch (error) {
         console.error("Error fetching event details:", error);
         setError("Failed to load event details");
+        toast({
+          title: "Error loading event",
+          description: "There was a problem loading the event details. Please try again later.",
+          variant: "destructive",
+        });
       } finally {
         setLoading(false);
       }
     }
     
     fetchEventDetails();
-  }, [id]);
+  }, [id, toast]);
 
   if (loading) {
     return (

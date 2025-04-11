@@ -7,18 +7,21 @@ import { Button } from '@/components/ui/button';
 import { Event, Venue } from '@/types';
 import { supabase } from '@/lib/supabase';
 import { Link } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast";
 
 export default function HomePage() {
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
   const [popularVenues, setPopularVenues] = useState<Venue[]>([]);
   const [venueNameMap, setVenueNameMap] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       
       try {
+        console.log("HomePage: Fetching featured events...");
         // Fetch featured events
         const { data: events, error: eventsError } = await supabase
           .from('events')
@@ -27,34 +30,52 @@ export default function HomePage() {
           .order('date', { ascending: true })
           .limit(3);
         
-        if (eventsError) throw eventsError;
+        if (eventsError) {
+          console.error("HomePage: Error fetching featured events:", eventsError);
+          throw eventsError;
+        }
+        
+        console.log("HomePage: Featured events data:", events);
         
         // Fetch popular venues
+        console.log("HomePage: Fetching venues...");
         const { data: venues, error: venuesError } = await supabase
           .from('venues')
           .select('*')
           .limit(3);
         
-        if (venuesError) throw venuesError;
+        if (venuesError) {
+          console.error("HomePage: Error fetching venues:", venuesError);
+          throw venuesError;
+        }
+        
+        console.log("HomePage: Venues data:", venues);
         
         // Create venue name map for event cards
         const venueMap: Record<number, string> = {};
-        venues.forEach(venue => {
-          venueMap[venue.id] = venue.name;
-        });
+        if (venues) {
+          venues.forEach(venue => {
+            venueMap[venue.id] = venue.name;
+          });
+        }
         
-        setFeaturedEvents(events);
-        setPopularVenues(venues);
+        setFeaturedEvents(events || []);
+        setPopularVenues(venues || []);
         setVenueNameMap(venueMap);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("HomePage: Error fetching data:", error);
+        toast({
+          title: "Error loading data",
+          description: "There was a problem loading the featured content. Please try again later.",
+          variant: "destructive",
+        });
       } finally {
         setLoading(false);
       }
     }
     
     fetchData();
-  }, []);
+  }, [toast]);
 
   return (
     <div>

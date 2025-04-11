@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+                tulum: {
+                    teal: '#44A5A7',
+                    sand: '#E6DFD2',
+                    coral: '#E86C5B',
+                    leaf: '#7DA278',
+                    ocean: '#088B9B',
+                    sunset: '#F6A868',
+                },
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,12 +93,27 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'fade-in': {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' }
+                },
+                'gentle-wave': {
+                    '0%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-5px)' },
+                    '100%': { transform: 'translateY(0)' }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 1s ease-out',
+                'gentle-wave': 'gentle-wave 3s ease-in-out infinite'
+			},
+            fontFamily: {
+                display: ['Playfair Display', 'serif'],
+                sans: ['Poppins', 'sans-serif'],
+            },
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

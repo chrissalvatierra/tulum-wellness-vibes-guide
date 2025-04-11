@@ -13,16 +13,16 @@ interface FilterBarProps {
 
 export interface EventFilters {
   search: string;
-  eventTypes: string[];
+  categories: string[];
   priceRange: [number, number | null];
 }
 
-const EVENT_TYPES = ['yoga', 'meditation', 'sound healing', 'workshop', 'retreat'];
+const EVENT_CATEGORIES = ['yoga', 'meditation', 'sound healing', 'workshop', 'retreat'];
 
 export default function FilterBar({ onFilterChange }: FilterBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceMin, setPriceMin] = useState<number>(0);
   const [priceMax, setPriceMax] = useState<number | null>(null);
   
@@ -30,28 +30,28 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
   useEffect(() => {
     onFilterChange({
       search,
-      eventTypes: selectedTypes,
+      categories: selectedCategories,
       priceRange: [priceMin, priceMax],
     });
-  }, [search, selectedTypes, priceMin, priceMax, onFilterChange]);
+  }, [search, selectedCategories, priceMin, priceMax, onFilterChange]);
   
-  const handleTypeToggle = (type: string) => {
-    setSelectedTypes(prev => 
-      prev.includes(type) 
-        ? prev.filter(t => t !== type) 
-        : [...prev, type]
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(t => t !== category) 
+        : [...prev, category]
     );
   };
   
   const handleClearFilters = () => {
     setSearch('');
-    setSelectedTypes([]);
+    setSelectedCategories([]);
     setPriceMin(0);
     setPriceMax(null);
     setIsOpen(false);
   };
   
-  const activeFilterCount = selectedTypes.length + (priceMin > 0 || priceMax !== null ? 1 : 0);
+  const activeFilterCount = selectedCategories.length + (priceMin > 0 || priceMax !== null ? 1 : 0);
 
   return (
     <div className="bg-white py-4 px-4 rounded-lg shadow-sm border border-gray-100 mb-6">
@@ -84,19 +84,19 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
           <PopoverContent className="w-80">
             <div className="space-y-4">
               <div>
-                <h3 className="font-medium mb-2">Event Type</h3>
+                <h3 className="font-medium mb-2">Event Category</h3>
                 <div className="flex flex-wrap gap-2">
-                  {EVENT_TYPES.map(type => (
+                  {EVENT_CATEGORIES.map(category => (
                     <Badge
-                      key={type}
-                      onClick={() => handleTypeToggle(type)}
+                      key={category}
+                      onClick={() => handleCategoryToggle(category)}
                       className={`cursor-pointer capitalize ${
-                        selectedTypes.includes(type) 
+                        selectedCategories.includes(category) 
                           ? 'bg-tulum-teal text-white' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
-                      {type}
+                      {category}
                     </Badge>
                   ))}
                 </div>

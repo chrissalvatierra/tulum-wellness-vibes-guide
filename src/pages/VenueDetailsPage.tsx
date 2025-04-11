@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapPin, ArrowLeft, Info, Calendar } from 'lucide-react';
@@ -25,7 +24,7 @@ export default function VenueDetailsPage() {
         const { data: venueData, error: venueError } = await supabase
           .from('venues')
           .select('*')
-          .eq('id', id)
+          .eq('id', parseInt(id))
           .single();
         
         if (venueError) throw venueError;
@@ -44,7 +43,7 @@ export default function VenueDetailsPage() {
           .order('date', { ascending: true });
         
         if (eventsError) throw eventsError;
-        setVenueEvents(eventsData);
+        setVenueEvents(eventsData as Event[]);
       } catch (error) {
         console.error("Error fetching venue details:", error);
         setError("Failed to load venue details");

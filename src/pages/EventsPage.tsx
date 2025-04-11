@@ -13,7 +13,7 @@ export default function EventsPage() {
   const { toast } = useToast();
   const [filters, setFilters] = useState<EventFilters>({
     search: '',
-    eventTypes: [],
+    categories: [],
     priceRange: [0, null],
   });
 
@@ -72,7 +72,7 @@ export default function EventsPage() {
           const { data: newVenues } = await supabase.from('venues').select('id, name');
           
           if (newEvents && newEvents.length > 0) {
-            setEvents(newEvents);
+            setEvents(newEvents as Event[]);
             
             // Update venue map
             const newVenueMap: Record<number, string> = {};
@@ -84,7 +84,7 @@ export default function EventsPage() {
             }
           }
         } else {
-          setEvents(eventsData || []);
+          setEvents(eventsData as Event[]);
           setVenueNameMap(venueMap);
         }
       } catch (error) {
@@ -111,15 +111,17 @@ export default function EventsPage() {
         return false;
       }
       
-      // Apply event type filter
-      if (filters.eventTypes.length > 0 && !filters.eventTypes.includes(event.event_type)) {
+      // Apply category filter
+      if (filters.categories.length > 0 && !filters.categories.includes(event.category)) {
         return false;
       }
       
       // Apply price filter
       const [min, max] = filters.priceRange;
-      if (event.price < min) return false;
-      if (max !== null && event.price > max) return false;
+      const eventPrice = parseFloat(event.price.replace('$', ''));
+      if (isNaN(eventPrice)) return true; // Skip price filtering if price is not a valid number
+      if (eventPrice < min) return false;
+      if (max !== null && eventPrice > max) return false;
       
       return true;
     });
@@ -217,68 +219,74 @@ async function createSampleData() {
     {
       title: "Full Moon Meditation Circle",
       description: "Join our monthly full moon meditation circle to harness the powerful energies of the lunar cycle. This guided session combines breathwork, intention setting, and silent meditation.",
-      event_type: "meditation",
+      category: "meditation",
       date: new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 7 days from now
       time: "19:00",
       venue_id: venueData[0].id,
-      price: 0,
+      price: "$0",
       image_url: "https://images.unsplash.com/photo-1536623975707-c4b3b2af565d?q=80&w=1000&auto=format&fit=crop",
       featured: true,
+      instructor: "Luna Flores"
     },
     {
       title: "Jungle Yoga Flow",
       description: "Experience a revitalizing vinyasa flow in the heart of the Tulum jungle. Connect with nature while moving through a sequence designed to energize the body and calm the mind.",
-      event_type: "yoga",
+      category: "yoga",
       date: new Date(currentDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 3 days from now
       time: "08:00",
       venue_id: venueData[1].id,
-      price: 25,
+      price: "$25",
       image_url: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=1000&auto=format&fit=crop",
       featured: false,
+      instructor: "Carlos Mendez"
     },
     {
       title: "Cacao Ceremony & Sound Healing",
       description: "A sacred cacao ceremony followed by a deeply restorative sound bath using crystal bowls, gongs, and shamanic instruments to facilitate healing and inner journey work.",
-      event_type: "sound healing",
+      category: "sound healing",
       date: new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 5 days from now
       time: "18:30",
       venue_id: venueData[2].id,
-      price: 40,
+      price: "$40",
       image_url: "https://images.unsplash.com/photo-1519930041497-9c35eb04888c?q=80&w=1000&auto=format&fit=crop",
       featured: true,
+      instructor: "Maya Johnson"
     },
     {
       title: "Breathwork & Ice Bath Workshop",
       description: "Learn powerful breathwork techniques and experience the transformative practice of ice bath immersion. This workshop combines ancient wisdom with modern science for enhanced wellbeing.",
-      event_type: "workshop",
+      category: "workshop",
       date: new Date(currentDate.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 10 days from now
       time: "10:00",
       venue_id: venueData[0].id,
-      price: 65,
+      price: "$65",
       image_url: "https://images.unsplash.com/photo-1600618528240-fb9fc964b853?q=80&w=1000&auto=format&fit=crop",
       featured: false,
+      instructor: "Wim Hoffman"
     },
     {
       title: "Sunset Yin Yoga",
       description: "A gentle, slow-paced yin practice focusing on deep stretching and meditation. Perfect for releasing tension and finding balance as the day comes to a close.",
-      event_type: "yoga",
+      category: "yoga",
       date: new Date(currentDate.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 2 days from now
       time: "17:30",
       venue_id: venueData[2].id,
-      price: 20,
+      price: "$20",
       image_url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000&auto=format&fit=crop",
       featured: false,
+      instructor: "Sofia Garcia"
     },
     {
       title: "Plant Medicine Integration Circle",
       description: "A supportive gathering for those who have experienced plant medicine ceremonies and wish to share insights, challenges, and integration practices in a safe container.",
-      event_type: "workshop",
+      category: "workshop",
       date: new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 14 days from now
       time: "19:00",
       venue_id: venueData[1].id,
-      price: 0,
+      price: "$0",
       image_url: "https://images.unsplash.com/photo-1524222835726-8e7d453fa83c?q=80&w=1000&auto=format&fit=crop",
       featured: true,
+      instructor: null
     }
   ];
 

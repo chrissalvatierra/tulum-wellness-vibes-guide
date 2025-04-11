@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { MapPin, ArrowLeft, Info, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Event, Venue } from '@/types';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import EventCard from '@/components/EventCard';
 
 export default function VenueDetailsPage() {

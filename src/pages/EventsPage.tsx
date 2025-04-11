@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import EventCard from '@/components/EventCard';
 import FilterBar, { EventFilters } from '@/components/FilterBar';
 import { Event, Venue } from '@/types';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from "@/hooks/use-toast";
 
 export default function EventsPage() {

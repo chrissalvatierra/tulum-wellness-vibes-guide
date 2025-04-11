@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin, ArrowLeft, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Event, Venue } from '@/types';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { formatEventDate } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
 

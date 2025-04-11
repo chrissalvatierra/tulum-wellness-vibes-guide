@@ -4,7 +4,7 @@ import VenueCard from '@/components/VenueCard';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { Venue } from '@/types';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function VenuesPage() {
   const [venues, setVenues] = useState<Venue[]>([]);

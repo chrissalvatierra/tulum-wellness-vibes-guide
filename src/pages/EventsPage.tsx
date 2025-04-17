@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import EventCard from '@/components/EventCard';
 import FilterBar, { EventFilters } from '@/components/FilterBar';
 import { Event, Venue } from '@/types';
@@ -11,11 +12,26 @@ export default function EventsPage() {
   const [venueNameMap, setVenueNameMap] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  
+  // Get category from URL if present
+  const categoryFromUrl = searchParams.get('category');
+  
   const [filters, setFilters] = useState<EventFilters>({
     search: '',
-    categories: [],
+    categories: categoryFromUrl ? [categoryFromUrl] : [],
     priceRange: [0, null],
   });
+
+  useEffect(() => {
+    // Update filters when URL changes
+    if (categoryFromUrl) {
+      setFilters(prev => ({
+        ...prev,
+        categories: [categoryFromUrl]
+      }));
+    }
+  }, [categoryFromUrl]);
 
   useEffect(() => {
     async function fetchData() {
@@ -134,7 +150,7 @@ export default function EventsPage() {
         <p className="tulum-subheading">Explore wellness events in Tulum</p>
       </div>
       
-      <FilterBar onFilterChange={setFilters} />
+      <FilterBar onFilterChange={setFilters} initialCategories={categoryFromUrl ? [categoryFromUrl] : []} />
       
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

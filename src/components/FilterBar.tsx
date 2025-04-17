@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 
 interface FilterBarProps {
   onFilterChange: (filters: EventFilters) => void;
+  initialCategories?: string[];
 }
 
 export interface EventFilters {
@@ -19,10 +20,10 @@ export interface EventFilters {
 
 const EVENT_CATEGORIES = ['yoga', 'meditation', 'sound healing', 'workshop', 'retreat'];
 
-export default function FilterBar({ onFilterChange }: FilterBarProps) {
+export default function FilterBar({ onFilterChange, initialCategories = [] }: FilterBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(initialCategories);
   const [priceMin, setPriceMin] = useState<number>(0);
   const [priceMax, setPriceMax] = useState<number | null>(null);
   
@@ -34,6 +35,13 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
       priceRange: [priceMin, priceMax],
     });
   }, [search, selectedCategories, priceMin, priceMax, onFilterChange]);
+  
+  // Update selected categories if initialCategories changes
+  useEffect(() => {
+    if (initialCategories.length > 0) {
+      setSelectedCategories(initialCategories);
+    }
+  }, [initialCategories]);
   
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories(prev => 

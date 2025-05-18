@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapPin, ArrowLeft, Info, Calendar } from 'lucide-react';
@@ -106,22 +107,22 @@ export default function VenueDetailsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         <div className="rounded-lg overflow-hidden shadow-md">
           <img 
-            src={venue.image_url || "/placeholder.svg"} 
-            alt={venue.name}
+            src={venue?.image_url || "/placeholder.svg"} 
+            alt={venue?.name}
             className="w-full h-auto object-cover"
           />
         </div>
         
         <div>
-          <h1 className="tulum-heading mb-4">{venue.name}</h1>
+          <h1 className="tulum-heading mb-4">{venue?.name}</h1>
           
           <div className="flex items-start gap-2 mb-6">
             <MapPin size={20} className="text-tulum-teal mt-1 flex-shrink-0" />
-            <p className="text-gray-700">{venue.address}</p>
+            <p className="text-gray-700">{venue?.address}</p>
           </div>
           
           <div className="prose max-w-none">
-            <p className="text-gray-700 whitespace-pre-line">{venue.description}</p>
+            <p className="text-gray-700 whitespace-pre-line">{venue?.description}</p>
           </div>
         </div>
       </div>
@@ -130,7 +131,7 @@ export default function VenueDetailsPage() {
         <div className="flex items-center gap-2 mb-6">
           <Calendar size={24} className="text-tulum-teal" />
           <h2 className="text-2xl font-display font-medium text-tulum-ocean">
-            Upcoming Events at {venue.name}
+            Upcoming Events at {venue?.name}
           </h2>
         </div>
         

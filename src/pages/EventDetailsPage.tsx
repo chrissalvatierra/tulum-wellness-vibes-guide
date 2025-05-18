@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin, ArrowLeft, Info, User } from 'lucide-react';
@@ -7,7 +8,6 @@ import { Event, Venue } from '@/types';
 import { supabase } from '@/integrations/supabase/client';
 import { formatEventDate } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent } from '@/components/ui/card';
 
 export default function EventDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -17,9 +17,6 @@ export default function EventDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
-
-  // Helper function to get the appropriate icon based on category
-  
 
   useEffect(() => {
     async function fetchEventDetails() {
@@ -153,13 +150,7 @@ export default function EventDetailsPage() {
         <h1 className="tulum-heading mb-2">{event.title}</h1>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <Card className="flex items-center justify-center p-8 h-80 bg-gray-50">
-          <div className="text-center">
-            <h2 className="text-2xl font-medium text-gray-700">{event.category}</h2>
-          </div>
-        </Card>
-        
+      <div className="grid grid-cols-1 gap-8 mb-12">
         <div>
           <div className="space-y-4 mb-6">
             <div className="flex items-center gap-2">

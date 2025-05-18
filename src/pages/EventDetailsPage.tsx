@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Calendar, Clock, MapPin, ArrowLeft, Info, User, Heart, Leaf, Music, BookOpen, Tent } from 'lucide-react';
+import { Calendar, Clock, MapPin, ArrowLeft, Info, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Event, Venue } from '@/types';
@@ -20,22 +19,7 @@ export default function EventDetailsPage() {
   const { toast } = useToast();
 
   // Helper function to get the appropriate icon based on category
-  const getCategoryIcon = (category: string) => {
-    switch (category.toLowerCase()) {
-      case 'yoga':
-        return <Heart size={64} className="text-tulum-teal" />;
-      case 'meditation':
-        return <Leaf size={64} className="text-tulum-leaf" />;
-      case 'sound healing':
-        return <Music size={64} className="text-tulum-sunset" />;
-      case 'workshop':
-        return <BookOpen size={64} className="text-tulum-coral" />;
-      case 'retreat':
-        return <Tent size={64} className="text-tulum-ocean" />;
-      default:
-        return <Calendar size={64} className="text-gray-500" />;
-    }
-  };
+  
 
   useEffect(() => {
     async function fetchEventDetails() {
@@ -172,8 +156,7 @@ export default function EventDetailsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         <Card className="flex items-center justify-center p-8 h-80 bg-gray-50">
           <div className="text-center">
-            {getCategoryIcon(event.category)}
-            <h2 className="mt-4 text-xl font-medium text-gray-700">{event.category}</h2>
+            <h2 className="text-2xl font-medium text-gray-700">{event.category}</h2>
           </div>
         </Card>
         

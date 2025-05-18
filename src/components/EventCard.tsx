@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, User, Yoga, Leaf, Music, BookOpen, Tent } from 'lucide-react';
+import { Calendar, Clock, MapPin, User, Heart, Leaf, Music, BookOpen, Tent } from 'lucide-react';
 import { Event } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { formatEventDate } from '@/lib/utils';
@@ -16,7 +16,7 @@ interface EventCardProps {
 const getCategoryIcon = (category: string) => {
   switch (category.toLowerCase()) {
     case 'yoga':
-      return <Yoga size={24} className="text-tulum-teal" />;
+      return <Heart size={24} className="text-tulum-teal" />;
     case 'meditation':
       return <Leaf size={24} className="text-tulum-leaf" />;
     case 'sound healing':

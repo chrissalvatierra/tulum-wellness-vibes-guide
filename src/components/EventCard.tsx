@@ -16,35 +16,6 @@ export default function EventCard({ event, venueNameMap, featured = false }: Eve
   return (
     <Card className={`tulum-card group ${featured ? 'md:col-span-2' : ''}`}>
       <CardContent className="pt-6">
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Link 
-              to={`/events?category=${encodeURIComponent(event.category)}`}
-              className="inline-block"
-            >
-              <Badge className={`
-                cursor-pointer hover:opacity-80 transition-opacity
-                ${event.category === 'yoga' ? 'bg-tulum-teal/20 text-tulum-teal hover:bg-tulum-teal/30' : ''}
-                ${event.category === 'meditation' ? 'bg-tulum-leaf/20 text-tulum-leaf hover:bg-tulum-leaf/30' : ''}
-                ${event.category === 'sound healing' ? 'bg-tulum-sunset/20 text-tulum-sunset hover:bg-tulum-sunset/30' : ''}
-                ${event.category === 'workshop' ? 'bg-tulum-coral/20 text-tulum-coral hover:bg-tulum-coral/30' : ''}
-                ${event.category === 'retreat' ? 'bg-tulum-ocean/20 text-tulum-ocean hover:bg-tulum-ocean/30' : ''}
-                ${!['yoga', 'meditation', 'sound healing', 'workshop', 'retreat'].includes(event.category) ? 'bg-gray-200 text-gray-600 hover:bg-gray-300' : ''}
-              `}>
-                {event.category}
-              </Badge>
-            </Link>
-            {event.price === '0' || event.price === '$0' ? (
-              <Badge variant="outline" className="bg-tulum-sand/10 text-gray-700">Free</Badge>
-            ) : (
-              <Badge variant="outline" className="bg-tulum-sand/10 text-gray-700">{event.price}</Badge>
-            )}
-          </div>
-          
-          {event.featured && !featured && (
-            <Badge className="bg-tulum-coral text-white">Featured</Badge>
-          )}
-        </div>
         
         <h3 className="text-xl font-display font-medium mb-2 text-tulum-ocean">
           {event.title}
@@ -75,9 +46,39 @@ export default function EventCard({ event, venueNameMap, featured = false }: Eve
             </div>
           )}
         </div>
-        
-        <Link 
-          to={`/events/${event.id}`} 
+
+        <div className="mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Link
+              to={`/events?category=${encodeURIComponent(event.category)}`}
+              className="inline-block"
+            >
+              <Badge className={`
+                cursor-pointer hover:opacity-80 transition-opacity
+                ${event.category === 'yoga' ? 'bg-tulum-teal/20 text-tulum-teal hover:bg-tulum-teal/30' : ''}
+                ${event.category === 'meditation' ? 'bg-tulum-leaf/20 text-tulum-leaf hover:bg-tulum-leaf/30' : ''}
+                ${event.category === 'sound healing' ? 'bg-tulum-sunset/20 text-tulum-sunset hover:bg-tulum-sunset/30' : ''}
+                ${event.category === 'workshop' ? 'bg-tulum-coral/20 text-tulum-coral hover:bg-tulum-coral/30' : ''}
+                ${event.category === 'retreat' ? 'bg-tulum-ocean/20 text-tulum-ocean hover:bg-tulum-ocean/30' : ''}
+                ${!['yoga', 'meditation', 'sound healing', 'workshop', 'retreat'].includes(event.category) ? 'bg-gray-200 text-gray-600 hover:bg-gray-300' : ''}
+              `}>
+                {event.category}
+              </Badge>
+            </Link>
+            {event.price === '0' || event.price === '$0' ? (
+              <Badge variant="outline" className="bg-tulum-sand/10 text-gray-700">Free</Badge>
+            ) : (
+              <Badge variant="outline" className="bg-tulum-sand/10 text-gray-700">{event.price}</Badge>
+            )}
+          </div>
+
+          {event.featured && !featured && (
+            <Badge className="bg-tulum-coral text-white">Featured</Badge>
+          )}
+        </div>
+
+        <Link
+          to={`/events/${event.id}`}
           className="inline-block text-tulum-teal font-medium hover:text-tulum-ocean hover:underline transition-colors"
         >
           View Details →

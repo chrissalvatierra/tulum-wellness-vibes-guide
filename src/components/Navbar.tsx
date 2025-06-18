@@ -11,7 +11,7 @@ export default function Navbar() {
     <nav className="bg-white shadow-sm py-4 px-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-tulum-ocean font-display text-2xl">Tulum Wellness</span>
+          <span className="text-tulum-ocean font-display text-2xl">Holistic Concierge</span>
         </Link>
         
         {/* Mobile menu button */}

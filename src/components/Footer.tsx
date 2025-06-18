@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-display mb-4">Tulum Wellness</h3>
+            <h3 className="text-xl font-display mb-4">Holistic Concierge</h3>
             <p className="text-tulum-sand/90 max-w-xs">
               Discover and connect with the best wellness events and venues in Tulum.
             </p>
